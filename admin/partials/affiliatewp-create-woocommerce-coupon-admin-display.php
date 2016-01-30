@@ -59,6 +59,15 @@
 					<span>The value of the voucher</span>
 				</td>
 			</tr>
+			<tr valign="top">
+				<th scope="row">Coupon Code Length</th>
+				<td>
+					<input name="awpwcc_code_length" type="number" min="3" max="32" steps="1" value="<?php echo get_option( 'awpwcc_code_length' ); ?>" />
+				</td>
+				<td>
+					<span>Of how many random letters/numbers shall the coupon code consist?</span>
+				</td>
+			</tr>
 		</table>
 		
 		<?php submit_button(); ?>

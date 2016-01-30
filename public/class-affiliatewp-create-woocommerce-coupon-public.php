@@ -125,29 +125,53 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	 */
 	public function create_coupon($affiliate_id, $value = 10, $discount_type = 'percent', $code_length = 6)
 	{
+		global $wpdb;
+
+		// Generate random code
 		$coupon_code = $this->generate_coupon_code($code_length);
-							
-		$coupon = array(
-			'post_title' => $coupon_code,
-			'post_content' => '',
-			'post_status' => 'publish',
-			'post_author' => 1,
+
+		// Check if code already exists in db
+		while (true)
+		{
+			$wpdb->get_results(
+				"
+				SELECT ID
+				FROM $wpdb->posts
+				WHERE
+					post_type = 'shop_coupon'
+					AND post_name = '$coupon_code'
+				"
+			);
+			
+			if (0 === $wpdb->num_rows)
+			{
+				// Unique code found
+				break;
+			}
+			else
+			{
+				// Code exists, generate new one
+				$coupon_code = $this->generate_coupon_code($code_length);
+			}
+		}
+		
+		// Add coupon		
+		$coupon = [
+			'post_title'	=> $coupon_code,
+			'post_content'	=> '',
+			'post_status'	=> 'publish',
+			'post_author'	=> 1,
 			'post_type'		=> 'shop_coupon'
-		);
-							
+		];
 		$new_coupon_id = wp_insert_post( $coupon );
-							
-		update_post_meta( $new_coupon_id, 'discount_type', $discount_type );
-		update_post_meta( $new_coupon_id, 'coupon_amount', $value );
-		update_post_meta( $new_coupon_id, 'individual_use', 'no' );
-		update_post_meta( $new_coupon_id, 'product_ids', '' );
-		update_post_meta( $new_coupon_id, 'exclude_product_ids', '' );
-		update_post_meta( $new_coupon_id, 'usage_limit', '' );
-		update_post_meta( $new_coupon_id, 'expiry_date', '' );
-		update_post_meta( $new_coupon_id, 'apply_before_tax', 'yes' );
-		update_post_meta( $new_coupon_id, 'free_shipping', 'no' );
-		update_post_meta( $new_coupon_id, 'affwp_discount_affiliate', $affiliate_id );
-		update_post_meta( $new_coupon_id, '_created_by_awpwcc', 'yes' );
+		
+		// Attach to affiliate and set other properties
+		update_post_meta($new_coupon_id, 'discount_type', $discount_type);
+		update_post_meta($new_coupon_id, 'coupon_amount', $value);
+		update_post_meta($new_coupon_id, 'apply_before_tax', 'yes');
+		update_post_meta($new_coupon_id, 'free_shipping', 'no');
+		update_post_meta($new_coupon_id, 'affwp_discount_affiliate', $affiliate_id);
+		update_post_meta($new_coupon_id, '_created_by_awpwcc', 'yes');
 	}
 
 	/**
@@ -157,7 +181,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	 */
 	public function delete_coupons($affiliate_id)
 	{
-		
 		global $wpdb;
 
 		$posts = $wpdb->get_results(
@@ -170,12 +193,11 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 			"
 		);
 
-		$post_ids = wp_list_pluck( $posts, 'post_id' );
+		$post_ids = wp_list_pluck($posts, 'post_id');
 
 		foreach ($post_ids as $post_id) {
 			wp_delete_post($post_id, false);
 		}
-
 	}
 
 	/**
@@ -188,19 +210,21 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	{
 		$value = get_option('awpwcc_default_value');
 		$type = get_option('awpwcc_default_type');
+		$length = get_option('awpwcc_code_length');
 		
+		// Default type to percent if unknown value
 		if($type != 'percent' AND $type != 'fixed_cart')
 		{
 			$type = 'percent';
 		}
 
+		// Limit to 100 in case of percent
 		if ($type == 'percent')
 		{
 			$value = min($value, 100); # max 100%
 		}
 		
-		$this->create_coupon($affiliate_id, $value, $type);
-
+		$this->create_coupon($affiliate_id, $value, $type, $length);
 	}
 
 	/**
@@ -215,7 +239,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 		{
 			$this->delete_coupons($affiliate_id);
 		}
-
 	}
 
 }

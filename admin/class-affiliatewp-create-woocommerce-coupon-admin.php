@@ -117,6 +117,7 @@ class AffiliateWP_Create_WooCommerce_Coupon_Admin {
 		register_setting('awpwcc-settings-general', 'awpwcc_auto_delete');
 		register_setting('awpwcc-settings-general', 'awpwcc_default_type');
 		register_setting('awpwcc-settings-general', 'awpwcc_default_value');
+		register_setting('awpwcc-settings-general', 'awpwcc_code_length');
 	}
 
 	public function add_settings_page()

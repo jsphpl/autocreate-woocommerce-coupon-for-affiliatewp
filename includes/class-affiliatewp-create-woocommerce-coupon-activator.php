@@ -35,6 +35,7 @@ class AffiliateWP_Create_WooCommerce_Coupon_Activator {
 		add_option('awpwcc_auto_delete', 1);
 		add_option('awpwcc_default_type', 'percent');
 		add_option('awpwcc_default_value', 5);
+		add_option('awpwcc_code_length', 6);
 
 	}
 
