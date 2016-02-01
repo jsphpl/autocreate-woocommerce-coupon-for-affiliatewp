@@ -211,8 +211,9 @@ class Autocreate_WooCommerce_Coupon_for_AffiliateWP_Public {
 	 *
 	 */
 	public function after_insert_affiliate($affiliate_id)
-	{	
-		$this->create_coupon($affiliate_id);
+	{
+		$length = get_option('acwccawp_code_length');
+		$this->create_coupon($affiliate_id, $length);
 	}
 
 	/**
