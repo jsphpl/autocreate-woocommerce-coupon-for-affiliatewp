@@ -173,9 +173,9 @@ class Autocreate_WooCommerce_Coupon_for_AffiliateWP_Public {
 		$template_id = get_option('acwccawp_template_id');
 		$template = get_post_meta($template_id);
 
-		// Copy remaining meta values over from template
+		// Copy meta values over from template
 		foreach ($this->meta_whitelist as $key) {
-			$value = $template[$key][0];
+			$value = maybe_unserialize($template[$key][0]);
 			update_post_meta($new_coupon_id, $key, $value);
 		}
 	}
