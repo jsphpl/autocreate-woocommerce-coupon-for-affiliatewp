@@ -48,7 +48,7 @@ class Autocreate_WooCommerce_Coupon_for_AffiliateWP_Activator {
 			$random_suffix = Autocreate_WooCommerce_Coupon_for_AffiliateWP_Public::random_code(6);
 			$template_coupon = [
 				'post_title'	=> 'acwccawp_template_' . $random_suffix,
-				'post_excerpt'	=> 'This is the template for coupons auto-created for new affiliates. Do not remove this coupon. Already existing coupons will not be affected by changes made here.',
+				'post_excerpt'	=> '',
 				'post_status'	=> 'publish',
 				'post_author'	=> 1,
 				'post_type'		=> 'shop_coupon'

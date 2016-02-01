@@ -178,6 +178,13 @@ class Autocreate_WooCommerce_Coupon_for_AffiliateWP_Public {
 			$value = maybe_unserialize($template[$key][0]);
 			update_post_meta($new_coupon_id, $key, $value);
 		}
+
+		// Copy over excerpt from template
+		$template_excerpt = get_post($template_id)->post_excerpt;
+		wp_update_post([
+			'ID'			=> $new_coupon_id,
+			'post_excerpt'	=> $template_excerpt
+		]);
 	}
 
 	/**
