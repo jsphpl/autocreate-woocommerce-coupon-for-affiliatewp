@@ -41,6 +41,32 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	private $version;
 
 	/**
+	 * Which meta keys to include when copying template to actual coupon.
+	 *
+	 * @since	1.0.0
+	 * @access	private
+	 * @var		array	$meta_whitelist		Which meta keys to include when copying template to actual coupon.
+	 */
+	private $meta_whitelist = [
+		'discount_type',
+		'coupon_amount',
+		'individual_use',
+		'product_ids',
+		'exclude_product_ids',
+		'usage_limit',
+		'usage_limit_per_user',
+		'limit_usage_to_x_items',
+		'expiry_date',
+		'free_shipping',
+		'exclude_sale_items',
+		'product_categories',
+		'exclude_product_categories',
+		'minimum_amount',
+		'maximum_amount',
+		'customer_email'
+	];
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -101,34 +127,16 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	}
 
 	/**
-	 * Generate a random coupon code of given length
-	 *
-	 * @since 1.0.0
-	 * @return string a random code of given length
-	 */
-	public function generate_coupon_code($length = 6, $chars = '0123456789abcdefghijklmnopqrstuvwxyz')
-	{
-		$chars_len = strlen($chars);
-		$result = '';
-		
-		for ($i = 0; $i < $length; $i++) {
-			$result .= $chars[rand(0, $chars_len - 1)];
-		}
-		
-		return $result;
-	}
-
-	/**
 	 * Create a coupon for the specified affiliate
 	 *
 	 * @since 1.0.0
 	 */
-	public function create_coupon($affiliate_id, $value = 10, $discount_type = 'percent', $code_length = 6)
+	public function create_coupon($affiliate_id, $code_length = 6)
 	{
 		global $wpdb;
 
 		// Generate random code
-		$coupon_code = $this->generate_coupon_code($code_length);
+		$coupon_code = static::random_code($code_length);
 
 		// Check if code already exists in db
 		while (true)
@@ -151,7 +159,7 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 			else
 			{
 				// Code exists, generate new one
-				$coupon_code = $this->generate_coupon_code($code_length);
+				$coupon_code = static::random_code($code_length);
 			}
 		}
 		
@@ -165,13 +173,19 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 		];
 		$new_coupon_id = wp_insert_post( $coupon );
 		
-		// Attach to affiliate and set other properties
-		update_post_meta($new_coupon_id, 'discount_type', $discount_type);
-		update_post_meta($new_coupon_id, 'coupon_amount', $value);
-		update_post_meta($new_coupon_id, 'apply_before_tax', 'yes');
-		update_post_meta($new_coupon_id, 'free_shipping', 'no');
+		// Attach to affiliate
 		update_post_meta($new_coupon_id, 'affwp_discount_affiliate', $affiliate_id);
-		update_post_meta($new_coupon_id, '_created_by_awpwcc', 'yes');
+		update_post_meta($new_coupon_id, 'awpwcc_version', $this->version);
+		
+		// Fetch template meta
+		$template_id = get_option('awpwcc_template_id');
+		$template = get_post_meta($template_id);
+
+		// Copy remaining meta values over from template
+		foreach ($this->meta_whitelist as $key) {
+			$value = $template[$key][0];
+			update_post_meta($new_coupon_id, $key, $value);
+		}
 	}
 
 	/**
@@ -207,24 +221,8 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 	 * @since 1.0.0
 	 */
 	public function after_insert_affiliate($affiliate_id)
-	{
-		$value = get_option('awpwcc_default_value');
-		$type = get_option('awpwcc_default_type');
-		$length = get_option('awpwcc_code_length');
-		
-		// Default type to percent if unknown value
-		if($type != 'percent' AND $type != 'fixed_cart')
-		{
-			$type = 'percent';
-		}
-
-		// Limit to 100 in case of percent
-		if ($type == 'percent')
-		{
-			$value = min($value, 100); # max 100%
-		}
-		
-		$this->create_coupon($affiliate_id, $value, $type, $length);
+	{	
+		$this->create_coupon($affiliate_id);
 	}
 
 	/**
@@ -239,6 +237,24 @@ class AffiliateWP_Create_WooCommerce_Coupon_Public {
 		{
 			$this->delete_coupons($affiliate_id);
 		}
+	}
+
+	/**
+	 * Generate a random coupon code of given length
+	 *
+	 * @since 1.0.0
+	 * @return string a random code of given length
+	 */
+	public static function random_code($length = 6, $chars = '0123456789abcdefghijklmnopqrstuvwxyz')
+	{
+		$chars_len = strlen($chars);
+		$result = '';
+		
+		for ($i = 0; $i < $length; $i++) {
+			$result .= $chars[rand(0, $chars_len - 1)];
+		}
+		
+		return $result;
 	}
 
 }

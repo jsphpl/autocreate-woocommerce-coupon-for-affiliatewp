@@ -29,14 +29,39 @@ class AffiliateWP_Create_WooCommerce_Coupon_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
-
+	public static function activate()
+	{
+		// Set default options
 		add_option('awpwcc_auto_create', 1);
 		add_option('awpwcc_auto_delete', 1);
-		add_option('awpwcc_default_type', 'percent');
-		add_option('awpwcc_default_value', 5);
 		add_option('awpwcc_code_length', 6);
 
+
+		// Find or create the template coupon
+		$template_id = get_option('awpwcc_template_id', null);
+
+		if (!(
+				0 < $template_id
+				AND 'shop_coupon' === get_post_type($template_id)
+				AND 'yes' === get_post_meta($template_id, 'awpwcc_template', True)
+				AND 'publish' === get_post_status($template_id)
+			))
+		{
+			// No valid template coupon there, create one
+			$random_suffix = AffiliateWP_Create_WooCommerce_Coupon_Public::random_code(6);
+			$template_coupon = [
+				'post_title'	=> 'awpwcc_template_' . $random_suffix,
+				'post_excerpt'	=> 'This is the template for coupons auto-created for new affiliates. Do not remove this coupon. Already existing coupons will not be affected by changes made here.',
+				'post_status'	=> 'publish',
+				'post_author'	=> 1,
+				'post_type'		=> 'shop_coupon'
+			];
+
+			$template_id = wp_insert_post( $template_coupon );
+			update_post_meta($template_id, 'awpwcc_template', 'yes');
+
+			update_option('awpwcc_template_id', $template_id);
+		}
 	}
 
 }

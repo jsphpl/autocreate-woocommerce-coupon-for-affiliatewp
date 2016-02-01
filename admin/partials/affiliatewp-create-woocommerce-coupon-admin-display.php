@@ -16,6 +16,8 @@
 <div class="wrap">
 	<h2>AffiliateWP Woocommerce Coupon Settings</h2>
 
+	<p><strong>In order to change the settings for the generated coupons, such as value or type, please edit the <a href="<?php echo get_edit_post_link(get_option('awpwcc_template_id'));  ?>">Template-Coupon</a>.</strong></p>
+
 	<form method="post" action="options.php">
 		<?php settings_fields( 'awpwcc-settings-general' ); ?>
 		<?php do_settings_sections( 'awpwcc-settings-general' ); ?>
@@ -36,27 +38,6 @@
 				</td>
 				<td>
 					<span>Check if you want to delete all coupons when an affiliate is deleted</span>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Coupon Type</th>
-				<td>
-					<select name="awpwcc_default_type">
-						<option value="percent" <?php selected( get_option('awpwcc_default_type'), 'percent' ); ?>>Percent</option>
-						<option value="fixed_cart" <?php selected( get_option('awpwcc_default_type'), 'fixed_cart' ); ?>>Fixed</option>
-					</select>
-				</td>
-				<td>
-					<span>Type of the voucher (percent or fixed)</span>
-				</td>
-			</tr>
-			<tr valign="top">
-				<th scope="row">Coupon Value</th>
-				<td>
-					<input name="awpwcc_default_value" type="text" value="<?php echo get_option( 'awpwcc_default_value' ); ?>" />
-				</td>
-				<td>
-					<span>The value of the voucher</span>
 				</td>
 			</tr>
 			<tr valign="top">
