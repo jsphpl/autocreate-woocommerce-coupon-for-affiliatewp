@@ -3,11 +3,10 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://github.com/jsphpl/affiliatewp-create-woocommerce-coupon
- * @since      1.0.0
+ * @link       https://github.com/jsphpl/autocreate-woocommerce-coupon-for-affiliatewp
  *
- * @package    AffiliateWP_Create_WooCommerce_Coupon
- * @subpackage AffiliateWP_Create_WooCommerce_Coupon/includes
+ * @package    Autocreate_WooCommerce_Coupon_for_AffiliateWP
+ * @subpackage Autocreate_WooCommerce_Coupon_for_AffiliateWP/includes
  */
 
 /**
@@ -17,16 +16,15 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    AffiliateWP_Create_WooCommerce_Coupon
- * @subpackage AffiliateWP_Create_WooCommerce_Coupon/includes
- * @author     Your Name <email@example.com>
+ * @package    Autocreate_WooCommerce_Coupon_for_AffiliateWP
+ * @subpackage Autocreate_WooCommerce_Coupon_for_AffiliateWP/includes
+ * @author     Joseph Paul <mail@jsph.pl>
  */
-class AffiliateWP_Create_WooCommerce_Coupon_Loader {
+class Autocreate_WooCommerce_Coupon_for_AffiliateWP_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      array    $actions    The actions registered with WordPress to fire when the plugin loads.
 	 */
@@ -35,7 +33,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	/**
 	 * The array of filters registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @access   protected
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
@@ -44,7 +41,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
-	 * @since    1.0.0
 	 */
 	public function __construct() {
 
@@ -56,7 +52,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	/**
 	 * Add a new action to the collection to be registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string               $hook             The name of the WordPress action that is being registered.
 	 * @param    object               $component        A reference to the instance of the object on which the action is defined.
 	 * @param    string               $callback         The name of the function definition on the $component.
@@ -70,7 +65,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	/**
 	 * Add a new filter to the collection to be registered with WordPress.
 	 *
-	 * @since    1.0.0
 	 * @param    string               $hook             The name of the WordPress filter that is being registered.
 	 * @param    object               $component        A reference to the instance of the object on which the filter is defined.
 	 * @param    string               $callback         The name of the function definition on the $component.
@@ -85,7 +79,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	 * A utility function that is used to register the actions and hooks into a single
 	 * collection.
 	 *
-	 * @since    1.0.0
 	 * @access   private
 	 * @param    array                $hooks            The collection of hooks that is being registered (that is, actions or filters).
 	 * @param    string               $hook             The name of the WordPress filter that is being registered.
@@ -112,7 +105,6 @@ class AffiliateWP_Create_WooCommerce_Coupon_Loader {
 	/**
 	 * Register the filters and actions with WordPress.
 	 *
-	 * @since    1.0.0
 	 */
 	public function run() {
 

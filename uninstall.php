@@ -19,10 +19,9 @@
  * For more information, see the following discussion:
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
- * @link       https://github.com/jsphpl/affiliatewp-create-woocommerce-coupon
- * @since      1.0.0
+ * @link       https://github.com/jsphpl/autocreate-woocommerce-coupon-for-affiliatewp
  *
- * @package    AffiliateWP_Create_WooCommerce_Coupon
+ * @package    Autocreate_WooCommerce_Coupon_for_AffiliateWP
  */
 
 // If uninstall not called from WordPress, then exit.

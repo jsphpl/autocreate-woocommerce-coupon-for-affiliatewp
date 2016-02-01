@@ -5,11 +5,10 @@
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
- * @link       https://github.com/jsphpl/affiliatewp-create-woocommerce-coupon
- * @since      1.0.0
+ * @link       https://github.com/jsphpl/autocreate-woocommerce-coupon-for-affiliatewp
  *
- * @package    AffiliateWP_Create_WooCommerce_Coupon
- * @subpackage AffiliateWP_Create_WooCommerce_Coupon/public/partials
+ * @package    Autocreate_WooCommerce_Coupon_for_AffiliateWP
+ * @subpackage Autocreate_WooCommerce_Coupon_for_AffiliateWP/public/partials
  */
 ?>
 

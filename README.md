@@ -1,4 +1,4 @@
-# AffiliateWP Create WooCommerce Coupon
+# Autocreate WooCommerce Coupon for AffiliateWP
 **A WordPress plugin to create a WooCommerce coupon for every affiliate created through AffiliateWP**
 
 Each time a new affiliate is created in AffiliateWP, this plugin creates a new voucher for them. You can choose value and type of the voucher. Also, the lenght of the generated code is adjustable.
